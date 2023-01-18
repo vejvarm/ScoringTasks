@@ -1,4 +1,5 @@
-# WORKING, needs data loading
+# WORKING
+import statistics
 from bleurt import score
 
 from flags import ModelPath
@@ -13,4 +14,4 @@ if __name__ == "__main__":
     scorer = score.BleurtScorer(checkpoint)  # BLEURT-tiny if None # TODO: how about the bleurt/test_checkpoint from DART?
     scores = scorer.score(references=reference, candidates=hypothesis)
     assert isinstance(scores, list)
-    print(scores)
+    print(f"score (mean): {statistics.mean(scores)}")
