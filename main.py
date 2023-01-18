@@ -7,7 +7,7 @@ from flags import DataPath
 # TODO: finish test for individual metrics
 #   - moverscore: working (gpu 30%, gpu memory expensive, medium time)
 #   - bertscore: working (gpu 90%, slow)
-#   - bleurt: wip (gpu 100%, slow)
+#   - bleurt: working (gpu 100%, slow)
 #   - parent: working (efficient, fast)
 # TODO: collectively load data once and then run all metrics on those ... no need to load all again right?
 

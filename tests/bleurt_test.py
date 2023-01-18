@@ -14,4 +14,4 @@ if __name__ == "__main__":
     scorer = score.BleurtScorer(checkpoint)  # BLEURT-tiny if None # TODO: how about the bleurt/test_checkpoint from DART?
     scores = scorer.score(references=reference, candidates=hypothesis)
     assert isinstance(scores, list)
-    print(f"score (mean): {statistics.mean(scores)}")
+    print(f"score (mean): {statistics.mean(scores)}")  # score (mean): 0.6011461934407719
