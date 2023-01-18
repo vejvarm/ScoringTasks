@@ -2,14 +2,14 @@
 pyemd
 
 # use pip
+# pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu116
 torch  # must be cuda-enabled!
 torchvision
 torchaudio
-# pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu116
 transformers
-moverscore  # pip install moverscore
 
 # use github
+moverscore  # pip install git+https://github.com/AIPHES/emnlp19-moverscore.git
 bert_score  #git clone https://github.com/Tiiiger/bert_score // cd bert_score // pip install .
 parent  #git clone https://github.com/KaijuML/parent.git // cd parent // pip install .
 bleurt  #git clone https://github.com/google-research/bleurt.git // cd bleurt // pip install .
