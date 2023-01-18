@@ -1,0 +1,15 @@
+# use conda
+pyemd
+
+# use pip
+torch  # must be cuda-enabled!
+torchvision
+torchaudio
+# pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu116
+transformers
+moverscore  # pip install moverscore
+
+# use github
+bert_score  #git clone https://github.com/Tiiiger/bert_score // cd bert_score // pip install .
+parent  #git clone https://github.com/KaijuML/parent.git // cd parent // pip install .
+bleurt  #git clone https://github.com/google-research/bleurt.git // cd bleurt // pip install .
