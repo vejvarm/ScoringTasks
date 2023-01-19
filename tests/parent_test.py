@@ -1,4 +1,5 @@
 # WORKING
+import time
 from parent import parent
 import json
 
@@ -9,6 +10,7 @@ if __name__ == "__main__":
     tdl = TableDataLoader()
     reference, hypothesis, table = tdl.load_tokenized()
 
+    tic = time.perf_counter()
     precision, recall, f_score = parent(
         hypothesis,
         reference,
@@ -18,7 +20,9 @@ if __name__ == "__main__":
         use_tqdm=True,
     )
 
+    print(f"time: {time.perf_counter() - tic}")
     print(f"precision: {precision:.3f}\nrecall: {recall:.3f}\nf1_score: {f_score:.3f}")
+
     # Computing PARENT: 100%|██████████| 72831/72831 [00:03<00:00, 23760.92it/s]
     # precision: 0.797
     # recall: 0.450

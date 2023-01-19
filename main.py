@@ -4,12 +4,14 @@ import statistics
 
 from flags import DataPath
 
-# TODO: finish test for individual metrics
+# DONE: finish test for individual metrics
 #   - moverscore: working (gpu 30%, gpu memory expensive, medium time)
 #   - bertscore: working (gpu 90%, slow)
 #   - bleurt: working (gpu 100%, slow)
 #   - parent: working (efficient, fast)
 # TODO: collectively load data once and then run all metrics on those ... no need to load all again right?
+# TODO: run the QA2D task on all of CSQA Simple subset (SQ-CSQA)
+# VCS in .idea <mapping directory="$PROJECT_DIR$" vcs="Git" />
 
 if __name__ =='__main__':
     root = Path('./data')

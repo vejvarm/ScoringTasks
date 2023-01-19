@@ -1,4 +1,5 @@
 # WORKING
+import time
 import statistics
 from bleurt import score
 
@@ -11,7 +12,10 @@ if __name__ == "__main__":
 
     checkpoint = ModelPath.BLEURT_20.value
 
+    tic = time.perf_counter()
     scorer = score.BleurtScorer(checkpoint)  # BLEURT-tiny if None # TODO: how about the bleurt/test_checkpoint from DART?
     scores = scorer.score(references=reference, candidates=hypothesis)
     assert isinstance(scores, list)
+
+    print(f"time: {time.perf_counter() - tic} s")  # time: 3401.973938458017 s
     print(f"score (mean): {statistics.mean(scores)}")  # score (mean): 0.6011461934407719
