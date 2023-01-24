@@ -1,13 +1,12 @@
 import logging
 import json
 from pathlib import Path
-from typing import TextIO
 
-# TODO:
-#   Load json files with csqa Simple Question entries (final_simple)
-#   Create a reference.txt file, where each row is (Q+A) reference sentence
-#   For each QA2D model, create a hypothesis.txt file, where each row is a Declarative transformation of given Q+A.
-#   (optional) do same for all entity replacement techniques (label->eid, label->placeholder, entity groups, etc. )
+# DONE: Load json files with csqa Simple Question entries (final_simple)
+# DONE: Create a reference.txt file, where each row is (Q+A) reference sentence
+# TODO: For each QA2D model, create a hypothesis.txt file, where each row is a Declarative transformation of given Q+A.
+# TODO: extract rdf information and create table.jsonl file with relevant data for PARENT metric
+# TODO: (optional) do same for all entity replacement techniques (label->eid, label->placeholder, entity groups, etc. )
 
 LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel(logging.INFO)
