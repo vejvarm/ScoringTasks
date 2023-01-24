@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 
 # DONE: Load json files with csqa Simple Question entries (final_simple)
-# DONE: Create a reference.txt file, where each row is (Q+A) reference sentence
+# DONE: Create a reference_{partition}.txt file, where each row is (Q+A) reference sentence
 # TODO: For each QA2D model, create a hypothesis.txt file, where each row is a Declarative transformation of given Q+A.
 # TODO: extract rdf information and create table.jsonl file with relevant data for PARENT metric
 # TODO: (optional) do same for all entity replacement techniques (label->eid, label->placeholder, entity groups, etc. )
@@ -32,6 +32,9 @@ class CSQAConverter:
             conversation = json.load(f)
 
         assert isinstance(conversation, list)
+        if not conversation:
+            return []
+
         assert isinstance(conversation[0], dict)
 
         return conversation
@@ -53,6 +56,9 @@ class CSQAConverter:
     def build_reference_file(self, reference_file_name="reference.txt"):
         for file_path in self.path_to_source_folder.glob("**/*.json"):
             conversation = self._load_csqa_json(file_path)
+            if not conversation:
+                LOGGER.warning(f"File {file_path} is empty. Skipping")
+                continue
             qa_list = self._extract_and_concatenate_qa_from_conversation(conversation)
             for sentence in qa_list:
                 self._append_to_reference_file(sentence, reference_file_name)
