@@ -63,3 +63,35 @@ class CSQAConverter:
             for sentence in qa_list:
                 self._append_to_reference_file(sentence, reference_file_name)
         LOGGER.info(f"Reference file built at path '{self.path_to_target_folder.joinpath(reference_file_name)}'")
+
+    def print_active_set(self, min_len=1):
+        coref_no_rel_field = 0
+        coref_rel_field = 0
+        for file_path in self.path_to_source_folder.glob("**/*.json"):
+            conversation = self._load_csqa_json(file_path)
+            if not conversation:
+                LOGGER.warning(f"File {file_path} is empty. Skipping")
+                continue
+            for i in range(1, len(conversation), 2):
+                q = conversation[i-1]
+                a = conversation[i]
+                active_set = a['active_set']
+                turn_pos = q['turn_position']
+                question_type = q['question-type']
+                if len(active_set) < min_len:
+                    continue
+                if 'relations' in q.keys():
+                    assert len(q['relations']) <= 1  # NOTE: All Questions have no more than 1 relation
+                if question_type == "Simple Question (Ellipsis)":
+                    assert len(q['relations']) == 0  # NOTE: All Ellipsis Questions have empty relations field
+                if question_type == "Simple Question (Coreferenced)":
+                    if 'relations' not in q.keys():
+                        coref_no_rel_field += 1  # NOTE: Yes/No, I meant ... type of questions (preceded by Clarification)
+                    else:
+                        coref_rel_field += 1  # NOTE: And Who/Which/What ... type of questions
+                        # print(q["sec_ques_type"], q["sec_ques_sub_type"], q["utterance"])
+                        LOGGER.debug(f"turn {turn_pos} in {file_path.parent.name}/{file_path.name} is Coref and has rel field")
+
+                # print(f"{active_set}")
+
+        print(f"# coref_no_rel: {coref_no_rel_field}\n# coref_rel: {coref_rel_field}")
