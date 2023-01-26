@@ -1,14 +1,22 @@
+from pathlib import Path
 from flags import ROOT_PATH
 from csqa_converter import CSQAConverter
 
 
-def make_partitioned_reference_files(partitions: tuple[str]):
+def make_partitioned_reference_files(source_folder: Path, partitions: tuple[str, ...], target_folder: Path):
     for partition in partitions:
-        source_folder = ROOT_PATH.joinpath(f"source_data/final_simple/csqa/{partition}")
-        target_folder = ROOT_PATH.joinpath("data")
-        csqa_conv = CSQAConverter(source_folder, target_folder)
+        partition_source_folder = source_folder.joinpath(partition)
+        csqa_conv = CSQAConverter(partition_source_folder, target_folder)
 
         csqa_conv.build_reference_file(f"reference_{partition}.txt")
+
+
+def make_partitioned_table_files(source_folder: Path, partitions: tuple[str, ...], target_folder: Path):
+    for partition in partitions:
+        partition_source_folder = source_folder.joinpath(partition)
+        csqa_conv = CSQAConverter(partition_source_folder, target_folder)
+
+        csqa_conv.build_table_file(f"table_{partition}.jsonl")
 
 
 def _print_active_sets(partitions: tuple[str], min_len=1):
@@ -20,10 +28,14 @@ def _print_active_sets(partitions: tuple[str], min_len=1):
 
 
 if __name__ == "__main__":
+    source_folder = ROOT_PATH.joinpath(f"source_data/final_simple/csqa")
+    target_folder = ROOT_PATH.joinpath("data")
     partitions = ("test", "train", "val")
 
-    # make_partitioned_reference_files(partitions)
-    _print_active_sets(partitions[1:2], min_len=1)
+    make_partitioned_reference_files(source_folder, partitions, target_folder)
+    make_partitioned_table_files(source_folder, partitions, target_folder)
+
+    # _print_active_sets(partitions[1:2], min_len=1)
     # ['(Q213,P194,c(Q1752346))']
     # ['(Q19278,P47,c(Q15617994))', '(Q36,P47,c(Q15617994))']
     # ['(c(Q20667921),P6,Q82955)']

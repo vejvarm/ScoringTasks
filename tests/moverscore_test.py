@@ -20,3 +20,6 @@ if __name__ == '__main__':
 
     print(f"time: {time.perf_counter() - tic}")
     print(f"score (mean): {statistics.mean(scores)}")  # 0.6850683179056607
+
+    # validation on reference-to-reference of SQ-CSQA
+    # score (mean): 0.9996483734041332

@@ -39,9 +39,15 @@ class CSQAConverter:
 
         return conversation
 
-    def _append_to_reference_file(self, sentence: str, reference_file_name: str):
-        with self.path_to_target_folder.joinpath(reference_file_name).open("a", encoding="utf8") as f:
-            f.write(sentence+"\n")
+    def _append_to_file(self, line: str, target_file_name: str):
+        with self.path_to_target_folder.joinpath(target_file_name).open("a", encoding="utf8") as f:
+            f.write(line)
+            f.write("\n")
+
+    def _append_to_jsonl(self, line: list, target_file_name: str):
+        with self.path_to_target_folder.joinpath(target_file_name).open("a", encoding="utf8") as f:
+            f.write(json.dumps(line))
+            f.write("\n")
 
     @staticmethod
     def _extract_and_concatenate_qa_from_conversation(conversation: list[dict]) -> list[str]:
@@ -53,6 +59,15 @@ class CSQAConverter:
 
         return qa_list
 
+    @staticmethod
+    def _extract_table_format(conversation: list[dict]) -> list[str]:
+        table_format_list = []
+        for i in range(0, len(conversation), 2):
+            sys = conversation[i+1]
+            table_format_list.append(sys["table_format"])
+
+        return table_format_list
+
     def build_reference_file(self, reference_file_name="reference.txt"):
         for file_path in self.path_to_source_folder.glob("**/*.json"):
             conversation = self._load_csqa_json(file_path)
@@ -61,7 +76,7 @@ class CSQAConverter:
                 continue
             qa_list = self._extract_and_concatenate_qa_from_conversation(conversation)
             for sentence in qa_list:
-                self._append_to_reference_file(sentence, reference_file_name)
+                self._append_to_file(sentence, reference_file_name)
         LOGGER.info(f"Reference file built at path '{self.path_to_target_folder.joinpath(reference_file_name)}'")
 
     def print_active_set(self, min_len=1):
@@ -95,3 +110,14 @@ class CSQAConverter:
                 # print(f"{active_set}")
 
         print(f"# coref_no_rel: {coref_no_rel_field}\n# coref_rel: {coref_rel_field}")
+
+    def build_table_file(self, table_file_name="table.txt"):
+        for file_path in self.path_to_source_folder.glob("**/*.json"):
+            conversation = self._load_csqa_json(file_path)
+            if not conversation:
+                LOGGER.warning(f"File {file_path} is empty. Skipping")
+                continue
+            table_format_list = self._extract_table_format(conversation)
+            for line in table_format_list:
+                self._append_to_jsonl(line, table_file_name)
+        LOGGER.info(f"Reference file built at path '{self.path_to_target_folder.joinpath(table_file_name)}'")
