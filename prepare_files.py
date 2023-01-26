@@ -28,7 +28,7 @@ def _print_active_sets(partitions: tuple[str], min_len=1):
 
 
 if __name__ == "__main__":
-    source_folder = ROOT_PATH.joinpath(f"source_data/final_simple/csqa")
+    source_folder = ROOT_PATH.joinpath(f"source_data/simple_direct")
     target_folder = ROOT_PATH.joinpath("data")
     partitions = ("test", "train", "val")
 

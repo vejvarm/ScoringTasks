@@ -33,3 +33,8 @@ if __name__ == "__main__":
     # precision: 1.000
     # recall: 0.827
     # f1_score: 0.898
+
+    # validation on ref-2-ref of SQ-CSQA-Direct
+    # precision: 1.000
+    # recall: 0.873
+    # f1_score: 0.924
