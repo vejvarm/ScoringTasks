@@ -1,26 +1,13 @@
-from pathlib import Path
-from moverscore_v2 import get_idf_dict, word_mover_score
-import statistics
+from flags import get_paths_to_data, Partition, DataFolder, LabelsAs
+from metrics import run_parent, run_bertscore
 
-from flags import DataPath
+if __name__ == "__main__":
+    data_folder = DataFolder.FINAL_SIMPLE_DIRECT
+    partition = Partition.VAL
+    labels_as = LabelsAs.LABEL
+    HypothesisFilesEnum, reference_file, table_file = get_paths_to_data(data_folder, partition, labels_as)
 
-# DONE: finish test for individual metrics
-#   - moverscore: working (gpu 30%, gpu memory expensive, medium time)
-#   - bertscore: working (gpu 90%, slow)
-#   - bleurt: working (gpu 100%, slow)
-#   - parent: working (efficient, fast)
-# TODO: collectively load data once and then run all metrics on those ... no need to load all again right?
-# TODO: run the QA2D task on all of CSQA Simple subset (SQ-CSQA)
-# VCS in .idea <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    # run_parent(data_folder, partition, labels_as, HypothesisFilesEnum, reference_file, table_file)
+    run_bertscore(data_folder, partition, labels_as, HypothesisFilesEnum, reference_file)
+    # TODO: do same for moverscore and bleurt
 
-if __name__ =='__main__':
-    root = Path('./data')
-    references = [r.strip('\n') for r in  open(DataPath.REFERENCE.value()).readlines()]
-    translations =[t.strip('\n') for t in  open(DataPath.HYPOTHESIS.value()).readlines()]
-    print(f'ref len:{len(references)}')
-    print(f'hyp len:{len(translations)}')
-    idf_dict_hyp = get_idf_dict(translations)
-    idf_dict_ref = get_idf_dict(references)
-    #reference is a list of reference sentences
-    scores = word_mover_score(references, translations, idf_dict_ref, idf_dict_hyp, stop_words=[], n_gram=1, remove_subwords=True)
-    print(statistics.mean(scores))

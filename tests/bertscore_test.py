@@ -22,3 +22,23 @@ if __name__ == "__main__":
     # precision: 1.000
     # recall: 1.000
     # f1_score: 1.000
+
+    # validation on hypothesis_val-T5-BASE-LABEL.txt
+    # precision: 0.657
+    # recall: 0.581
+    # f1_score: 0.619
+
+    # validation on hypothesis_val-T5-WHYN-LABEL.txt
+    # precision: 0.712
+    # recall: 0.638
+    # f1_score: 0.675
+
+    # validation on hypothesis_val-T5-SMALL-LABEL.txt
+    # precision: 0.657
+    # recall: 0.561
+    # f1_score: 0.608
+
+    # validation on hypothesis_val-T5-3B-LABEL.txt
+    # precision: 0.687
+    # recall: 0.559
+    # f1_score: 0.622

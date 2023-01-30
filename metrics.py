@@ -1,0 +1,69 @@
+import statistics
+import time
+import pandas as pd
+from pathlib import Path
+from typing import Iterable
+
+from parent import parent
+from bert_score import score
+
+from flags import RESULTS_PATH, Partition, DataFolder, LabelsAs
+from data_loader import DataLoader, TableDataLoader
+
+
+def run_parent(data_folder: DataFolder, partition: Partition, labels_as: LabelsAs, HypothesisFiles: Iterable, reference_file: Path, table_file: Path):
+    print('Running PARENT metric:')
+    df = pd.DataFrame()
+    for hypothesis_txt_path in HypothesisFiles:
+        print(hypothesis_txt_path.value.name)
+        tdl = TableDataLoader(reference_file, hypothesis_txt_path.value, table_file)
+        reference, hypothesis, table = tdl.load_tokenized()
+
+        tic = time.perf_counter()
+        precision, recall, f_score = parent(
+            hypothesis,
+            reference,
+            table,
+            avg_results=False,  # if False, returns list with individual scores for each (hyp, ref) pair
+            n_jobs=-1,
+            use_tqdm=True,
+        )
+
+        p_mean = statistics.mean(precision)
+        r_mean = statistics.mean(recall)
+        f1_mean = statistics.mean(f_score)
+
+        print(f"\ttime: {time.perf_counter() - tic}")
+        # print(f"\tprecision: {p_mean:.3f}\n\trecall: {r_mean:.3f}\n\tf1_score: {f1_mean:.3f}")
+
+        df = pd.concat([df, pd.Series({'precision': p_mean, 'recall': r_mean, 'f1_score': f1_mean}).rename(hypothesis_txt_path.name)], axis=1)
+
+    result_file = RESULTS_PATH.joinpath(f'PARENT_{data_folder.value.name}-{partition.value}-{labels_as.value}.csv')
+    df.to_csv(result_file.open('w', encoding='utf8'))
+    print(f"PARENT results saved to '{result_file.parent.name}/{result_file.name}'")
+
+
+def run_bertscore(data_folder: DataFolder, partition: Partition, labels_as: LabelsAs, HypothesisFiles: Iterable, reference_file: Path):
+    print('Running BERTScore metric:')
+    df = pd.DataFrame()
+    for hypothesis_txt_path in HypothesisFiles:
+        print(hypothesis_txt_path.value.name)
+        dl = DataLoader(reference_file, hypothesis_txt_path.value)
+        reference, hypothesis = dl.load()
+
+        tic = time.perf_counter()
+        precision, recall, f_score = score(hypothesis, reference, model_type="roberta-large", lang='en', verbose=True, idf=True,
+                         rescale_with_baseline=True)
+
+        p_mean = precision.mean()
+        r_mean = recall.mean()
+        f1_mean = f_score.mean()
+        print(f"\ttime: {time.perf_counter() - tic}")
+        # print(f"\tprecision: {p_mean:.3f}\n\trecall: {r_mean:.3f}\n\tf1_score: {f1_mean:.3f}")
+
+        df = pd.concat([df, pd.Series({'precision': p_mean, 'recall': r_mean, 'f1_score': f1_mean}).rename(hypothesis_txt_path.name)], axis=1)
+
+    result_file = RESULTS_PATH.joinpath(f'BERTScore_{data_folder.value.name}-{partition.value}-{labels_as.value}.csv')
+    df.to_csv(result_file.open('w', encoding='utf8'))
+    print(f"BERTScore results saved to '{result_file.parent.name}/{result_file.name}'")
+

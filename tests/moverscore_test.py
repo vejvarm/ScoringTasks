@@ -23,3 +23,6 @@ if __name__ == '__main__':
 
     # validation on reference-to-reference of SQ-CSQA
     # score (mean): 0.9996483734041332
+
+    # validation on simple_test hypothesis_val_T5_BASE-LABEL.txt
+    # score (mean): 0.6699021602081112

@@ -28,9 +28,11 @@ def _print_active_sets(partitions: tuple[str], min_len=1):
 
 
 if __name__ == "__main__":
-    source_folder = ROOT_PATH.joinpath(f"source_data/simple_direct")
-    target_folder = ROOT_PATH.joinpath("data")
-    partitions = ("test", "train", "val")
+    source_folder = ROOT_PATH.joinpath(f"source_data/simple_test")
+    target_folder = ROOT_PATH.joinpath("data/simple_test")
+    partitions = ("test", "train", "val")[-1:]
+
+    target_folder.mkdir(parents=True, exist_ok=True)
 
     make_partitioned_reference_files(source_folder, partitions, target_folder)
     make_partitioned_table_files(source_folder, partitions, target_folder)
