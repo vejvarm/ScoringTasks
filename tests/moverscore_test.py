@@ -11,6 +11,10 @@ if __name__ == '__main__':
 
     print(f'ref len:{len(reference)}')
     print(f'hyp len:{len(hypothesis)}')
+
+    if not reference or not hypothesis:
+        raise ValueError('Either reference or hypothesis list is empty')
+
     tic = time.perf_counter()
     idf_dict_hyp = get_idf_dict(hypothesis)
     idf_dict_ref = get_idf_dict(reference)

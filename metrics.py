@@ -19,6 +19,9 @@ def run_parent(data_folder: DataFolder, partition: Partition, labels_as: LabelsA
         tdl = TableDataLoader(reference_file, hypothesis_txt_path.value, table_file)
         reference, hypothesis, table = tdl.load_tokenized()
 
+        if not reference or not hypothesis or not table:
+            continue
+
         tic = time.perf_counter()
         precision, recall, f_score = parent(
             hypothesis,
@@ -50,6 +53,9 @@ def run_bertscore(data_folder: DataFolder, partition: Partition, labels_as: Labe
         print(hypothesis_txt_path.value.name)
         dl = DataLoader(reference_file, hypothesis_txt_path.value)
         reference, hypothesis = dl.load()
+
+        if not reference or not hypothesis:
+            continue
 
         tic = time.perf_counter()
         precision, recall, f_score = score(hypothesis, reference, model_type="roberta-large", lang='en', verbose=True, idf=True,

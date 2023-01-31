@@ -10,6 +10,12 @@ if __name__ == "__main__":
     dl = DataLoader()
     reference, hypothesis = dl.load()
 
+    print(f'ref len:{len(reference)}')
+    print(f'hyp len:{len(hypothesis)}')
+
+    if not reference or not hypothesis:
+        raise ValueError('Either reference or hypothesis list is empty')
+
     checkpoint = ModelPath.BLEURT_20.value
 
     tic = time.perf_counter()

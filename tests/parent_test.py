@@ -17,9 +17,13 @@ if __name__ == "__main__":
         tdl = TableDataLoader(reference_file, hypothesis_txt_path.value, table_file)
         reference, hypothesis, table = tdl.load_tokenized()
 
-        # print(len(reference))
-        # print(len(hypothesis))
-        # print(len(table))
+        print(f'\tref len:{len(reference)}')
+        print(f'\thyp len:{len(hypothesis)}')
+        print(f'\ttab len:{len(table)}')
+
+        if not reference or not hypothesis or not table:
+            continue
+
         tic = time.perf_counter()
         precision, recall, f_score = parent(
             hypothesis,

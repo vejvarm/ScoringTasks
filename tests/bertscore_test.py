@@ -7,6 +7,12 @@ if __name__ == "__main__":
     dl = DataLoader()
     reference, hypothesis = dl.load()
 
+    print(f'ref len:{len(reference)}')
+    print(f'hyp len:{len(hypothesis)}')
+
+    if not reference or not hypothesis:
+        raise ValueError('Either reference or hypothesis list is empty')
+
     P, R, F1 = score(hypothesis, reference, model_type="roberta-large", lang='en', verbose=True, idf=True,
                      rescale_with_baseline=True)
 
