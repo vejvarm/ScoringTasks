@@ -55,9 +55,9 @@ def run_bertscore(data_folder: DataFolder, partition: Partition, labels_as: Labe
         precision, recall, f_score = score(hypothesis, reference, model_type="roberta-large", lang='en', verbose=True, idf=True,
                          rescale_with_baseline=True)
 
-        p_mean = precision.mean()
-        r_mean = recall.mean()
-        f1_mean = f_score.mean()
+        p_mean = precision.mean().cpu().numpy()
+        r_mean = recall.mean().cpu().numpy()
+        f1_mean = f_score.mean().cpu().numpy()
         print(f"\ttime: {time.perf_counter() - tic}")
         # print(f"\tprecision: {p_mean:.3f}\n\trecall: {r_mean:.3f}\n\tf1_score: {f1_mean:.3f}")
 
