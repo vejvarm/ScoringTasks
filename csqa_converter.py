@@ -2,12 +2,6 @@ import logging
 import json
 from pathlib import Path
 
-# DONE: Load json files with csqa Simple Question entries (final_simple)
-# DONE: Create a reference_{partition}.txt file, where each row is (Q+A) reference sentence
-# TODO: For each QA2D model, create a hypothesis.txt file, where each row is a Declarative transformation of given Q+A.
-# TODO: extract rdf information and create table.jsonl file with relevant data for PARENT metric
-# TODO: (optional) do same for all entity replacement techniques (label->eid, label->placeholder, entity groups, etc. )
-
 LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel(logging.INFO)
 
@@ -23,7 +17,7 @@ class CSQAConverter:
         self.path_to_source_folder = path_to_source_folder
         self.path_to_target_folder = path_to_target_folder
 
-        assert self.path_to_source_folder.exists(), "Path to source json file folder doesn't exists. Please provide valid path."
+        assert self.path_to_source_folder.exists(), "Path to source json folder doesn't exists. Provide a valid path."
 
     @staticmethod
     def _load_csqa_json(pth: Path) -> list[dict]:
@@ -44,7 +38,7 @@ class CSQAConverter:
             f.write(line)
             f.write("\n")
 
-    def _append_to_jsonl(self, line: list, target_file_name: str):
+    def _append_to_jsonl(self, line: list[str] or str, target_file_name: str):
         with self.path_to_target_folder.joinpath(target_file_name).open("a", encoding="utf8") as f:
             f.write(json.dumps(line))
             f.write("\n")
@@ -101,11 +95,13 @@ class CSQAConverter:
                     assert len(q['relations']) == 0  # NOTE: All Ellipsis Questions have empty relations field
                 if question_type == "Simple Question (Coreferenced)":
                     if 'relations' not in q.keys():
-                        coref_no_rel_field += 1  # NOTE: Yes/No, I meant ... type of questions (preceded by Clarification)
+                        coref_no_rel_field += 1  # NOTE: "Yes/No, I meant" type of questions (preceded by Clarification)
                     else:
                         coref_rel_field += 1  # NOTE: And Who/Which/What ... type of questions
                         # print(q["sec_ques_type"], q["sec_ques_sub_type"], q["utterance"])
-                        LOGGER.debug(f"turn {turn_pos} in {file_path.parent.name}/{file_path.name} is Coref and has rel field")
+                        LOGGER.debug(
+                            f'turn {turn_pos} in {file_path.parent.name}/{file_path.name} is Coref and has rel field'
+                        )
 
                 # print(f"{active_set}")
 

@@ -6,6 +6,7 @@ from flags import DataPath
 LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel(logging.WARNING)
 
+
 class DataLoader:
 
     def __init__(self,

@@ -36,11 +36,3 @@ if __name__ == "__main__":
 
     make_partitioned_reference_files(source_folder, partitions, target_folder)
     make_partitioned_table_files(source_folder, partitions, target_folder)
-
-    # _print_active_sets(partitions[1:2], min_len=1)
-    # ['(Q213,P194,c(Q1752346))']
-    # ['(Q19278,P47,c(Q15617994))', '(Q36,P47,c(Q15617994))']
-    # ['(c(Q20667921),P6,Q82955)']
-    # ['(c(Q15617994),P37,Q9056)', '(c(Q15617994),P37,Q8752)', '(c(Q15617994),P37,Q397)']
-    # TODO: here we can just use transform_active_set.py from CARTON/annotate_csqa to create the table.jsonl file.
-    #   !Or just use the new "table_format" entries from CARTON/data/final_simple after the operation finishes
