@@ -5,9 +5,9 @@ from pathlib import Path
 from typing import Iterable
 
 from parent import parent
-from bert_score import score
+from bert_score import score as bertscore
 from moverscore_v2 import get_idf_dict, word_mover_score
-from bleurt import score
+from bleurt import score as bleurtscore
 
 from flags import RESULTS_PATH, Partition, DataFolder, LabelsAs, ModelPath
 from data_loader import DataLoader, TableDataLoader
@@ -69,7 +69,7 @@ def run_bertscore(data_folder: DataFolder,
             continue
 
         tic = time.perf_counter()
-        precision, recall, f_score = score(hypothesis, reference, model_type="roberta-large", lang='en', verbose=True, idf=True,
+        precision, recall, f_score = bertscore(hypothesis, reference, model_type="roberta-large", lang='en', verbose=True, idf=True,
                          rescale_with_baseline=True)
 
         p_mean = precision.mean().cpu().numpy()
@@ -138,7 +138,7 @@ def run_bleurt(data_folder: DataFolder,
         checkpoint = ModelPath.BLEURT_20.value
 
         tic = time.perf_counter()
-        scorer = score.BleurtScorer(checkpoint)
+        scorer = bleurtscore.BleurtScorer(checkpoint)
         scores = scorer.score(references=reference, candidates=hypothesis)
         assert isinstance(scores, list)
 
