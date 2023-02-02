@@ -126,6 +126,8 @@ def run_bleurt(data_folder: DataFolder,
                HypothesisFiles: Iterable,
                reference_file: Path):
     print('Running BLEURT metric:')
+    checkpoint = ModelPath.BLEURT_20.value
+    scorer = bleurtscore.BleurtScorer(checkpoint)
     df = pd.DataFrame()
     for hypothesis_txt_path in HypothesisFiles:
         print(hypothesis_txt_path.value.name)
@@ -135,10 +137,7 @@ def run_bleurt(data_folder: DataFolder,
         if not reference or not hypothesis:
             continue
 
-        checkpoint = ModelPath.BLEURT_20.value
-
         tic = time.perf_counter()
-        scorer = bleurtscore.BleurtScorer(checkpoint)
         scores = scorer.score(references=reference, candidates=hypothesis)
         assert isinstance(scores, list)
 
