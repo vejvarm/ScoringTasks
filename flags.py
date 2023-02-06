@@ -27,7 +27,9 @@ class LabelsAs(Enum):
 
 class DataFolder(Enum):
     FINAL_SIMPLE = Path('data/final_simple')
-    FINAL_SIMPLE_DIRECT = Path('data/final_simple_direct')
+    SIMPLE_DIRECT = Path('data/simple_direct')        # property is one string
+    SIMPLE_DIRECT_V2 = Path('data/simple_direct_v2')  # property divided into word list (tokenized) NOTE: (no effect on PARENT)
+    SIMPLE_DIRECT_V3 = Path('data/simple_direct_v3')  # all table values in one list NOTE: (error for PARENT)
 
 
 class HypothesisFileParser:
@@ -81,5 +83,5 @@ class ModelPath(Enum):
 
 
 if __name__ == "__main__":
-    file_paths = get_paths_to_data(DataFolder.FINAL_SIMPLE_DIRECT, Partition.VAL, LabelsAs.LABEL)
+    file_paths = get_paths_to_data(DataFolder.SIMPLE_DIRECT, Partition.VAL, LabelsAs.LABEL)
     print(file_paths[0].T5_WHYN.value)

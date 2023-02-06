@@ -8,7 +8,7 @@ from data_loader import TableDataLoader
 
 if __name__ == "__main__":
     df = pd.DataFrame()
-    data_folder = DataFolder.FINAL_SIMPLE_DIRECT
+    data_folder = DataFolder.SIMPLE_DIRECT
     partition = Partition.VAL
     labels_as = LabelsAs.LABEL
     hypothesis_files_enum, reference_file, table_file = get_paths_to_data(data_folder, partition, labels_as)

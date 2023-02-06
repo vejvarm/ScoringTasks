@@ -28,8 +28,8 @@ def _print_active_sets(partitions: tuple[str], min_len=1):
 
 
 if __name__ == "__main__":
-    source_folder = ROOT_PATH.joinpath(f"source_data/simple_test")
-    target_folder = ROOT_PATH.joinpath("data/simple_test")
+    source_folder = ROOT_PATH.joinpath(f"source_data/simple_direct_v3")
+    target_folder = ROOT_PATH.joinpath("data/simple_direct_v3")
     partitions = ("test", "train", "val")[-1:]
 
     target_folder.mkdir(parents=True, exist_ok=True)
